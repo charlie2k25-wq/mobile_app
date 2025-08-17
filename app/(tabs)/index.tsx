@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Plus, Heart, MessageCircle, Share, MoreHorizontal } from 'lucide-react-native';
+import { Plus, Heart, MessageCircle, Share, MoveHorizontal as MoreHorizontal } from 'lucide-react-native';
 import TopNavigation from '@/components/TopNavigation';
 import FloatingActionButton from '@/components/FloatingActionButton';
 

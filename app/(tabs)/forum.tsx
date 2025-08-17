@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronUp, MessageCircle, TrendingUp, Clock, BarChart3 } from 'lucide-react-native';
+import { ChevronUp, MessageCircle, TrendingUp, Clock, ChartBar as BarChart3 } from 'lucide-react-native';
 import TopNavigation from '@/components/TopNavigation';
 import FloatingActionButton from '@/components/FloatingActionButton';
 
