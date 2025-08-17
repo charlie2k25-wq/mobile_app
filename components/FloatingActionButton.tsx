@@ -134,7 +134,7 @@ export default function FloatingActionButton() {
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   fab: {
     position: 'absolute',
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#8B5CF6',
+    backgroundColor: '#000000',
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 8,
@@ -178,15 +178,20 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   optionLabel: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontSize: 14,
     fontWeight: '600',
     marginRight: 12,
-    backgroundColor: '#1F2937',
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#374151',
+    borderColor: '#E5E7EB',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
 });

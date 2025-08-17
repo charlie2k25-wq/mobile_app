@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Plus, Heart, MessageCircle, Share, MoveHorizontal as MoreHorizontal } from 'lucide-react-native';
+import { Plus, Heart, MessageCircle, Share, MoreHorizontal } from 'lucide-react-native';
 import TopNavigation from '@/components/TopNavigation';
 import FloatingActionButton from '@/components/FloatingActionButton';
 
@@ -49,31 +49,12 @@ export default function HomeScreen() {
       comments: 12,
       isLiked: true,
     },
-    {
-      id: '3',
-      author: 'Emma Thompson',
-      avatar: 'https://images.pexels.com/photos/1139743/pexels-photo-1139743.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop',
-      content: 'Starting a new study group for Advanced Calculus this Monday. We\'ll be covering limits, derivatives, and integrals. DM me if you want to join!',
-      type: 'story',
-      timestamp: '6h ago',
-      likes: 45,
-      comments: 8,
-      isLiked: false,
-    },
   ]);
 
   const [newPost, setNewPost] = useState('');
 
   const handleLike = (postId: string) => {
     // Handle like functionality
-  };
-
-  const handleComment = (postId: string) => {
-    // Handle comment functionality
-  };
-
-  const handleShare = (postId: string) => {
-    // Handle share functionality
   };
 
   const getTypeColor = (type: string) => {
@@ -104,15 +85,11 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Top Navigation */}
       <TopNavigation />
 
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>EduSocial</Text>
-        <TouchableOpacity style={styles.addButton}>
-          <Plus size={24} color="#FFFFFF" />
-        </TouchableOpacity>
+      {/* Page Header */}
+      <View style={styles.pageHeader}>
+        <Text style={styles.pageTitle}>EduSocial</Text>
       </View>
 
       {/* Create Post Section */}
@@ -172,18 +149,12 @@ export default function HomeScreen() {
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.actionButton}
-                onPress={() => handleComment(post.id)}
-              >
+              <TouchableOpacity style={styles.actionButton}>
                 <MessageCircle size={20} color="#9CA3AF" />
                 <Text style={styles.actionText}>{post.comments}</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.actionButton}
-                onPress={() => handleShare(post.id)}
-              >
+              <TouchableOpacity style={styles.actionButton}>
                 <Share size={20} color="#9CA3AF" />
                 <Text style={styles.actionText}>Share</Text>
               </TouchableOpacity>
@@ -192,7 +163,6 @@ export default function HomeScreen() {
         ))}
       </ScrollView>
 
-      {/* Floating Action Button */}
       <FloatingActionButton />
     </SafeAreaView>
   );
@@ -201,52 +171,43 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#111827',
+    backgroundColor: '#F9FAFB',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  pageHeader: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 16,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#374151',
+    borderBottomColor: '#E5E7EB',
   },
-  headerTitle: {
-    fontSize: 24,
+  pageTitle: {
+    fontSize: 32,
     fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  addButton: {
-    width: 40,
-    height: 40,
-    backgroundColor: '#8B5CF6',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    color: '#000000',
   },
   createPostContainer: {
     flexDirection: 'row',
     padding: 16,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#374151',
+    borderBottomColor: '#E5E7EB',
     alignItems: 'flex-end',
   },
   createPostInput: {
     flex: 1,
-    backgroundColor: '#374151',
+    backgroundColor: '#F3F4F6',
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 12,
     marginRight: 12,
   },
   postInput: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontSize: 16,
     maxHeight: 80,
   },
   postButton: {
-    backgroundColor: '#8B5CF6',
+    backgroundColor: '#000000',
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 20,
@@ -260,13 +221,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   postCard: {
-    backgroundColor: '#1F2937',
+    backgroundColor: '#FFFFFF',
     marginHorizontal: 16,
     marginVertical: 8,
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#374151',
+    borderColor: '#E5E7EB',
   },
   postHeader: {
     flexDirection: 'row',
@@ -283,7 +244,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   authorName: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 4,
@@ -308,7 +269,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   postContent: {
-    color: '#E5E7EB',
+    color: '#374151',
     fontSize: 16,
     lineHeight: 24,
     marginBottom: 16,
@@ -318,7 +279,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: '#374151',
+    borderTopColor: '#E5E7EB',
   },
   actionButton: {
     flexDirection: 'row',

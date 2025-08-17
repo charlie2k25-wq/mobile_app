@@ -1,98 +1,43 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRouter, usePathname } from 'expo-router';
-import { MessageSquare, Search, Calendar, Users, Brain, Bell } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
+import { Menu, ShoppingCart, User, Bell, Search } from 'lucide-react-native';
 
 export default function TopNavigation() {
   const router = useRouter();
-  const pathname = usePathname();
-
-  const isForumActive = pathname === '/forum';
-  const isSearchActive = pathname === '/search';
-  const isEventsActive = pathname === '/events';
-  const isGroupsActive = pathname === '/groups';
-  const isQuizActive = pathname === '/quiz';
-  const isNotificationsActive = pathname === '/notifications';
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={[styles.navItem, isForumActive && styles.activeNavItem]}
-        onPress={() => router.push('/forum')}
-      >
-        <MessageSquare 
-          size={20} 
-          color={isForumActive ? '#FFFFFF' : '#9CA3AF'} 
-        />
-        <Text style={[styles.navText, isForumActive && styles.activeNavText]}>
-          Forum
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[styles.navItem, isSearchActive && styles.activeNavItem]}
-        onPress={() => router.push('/search')}
-      >
-        <Search 
-          size={20} 
-          color={isSearchActive ? '#FFFFFF' : '#9CA3AF'} 
-        />
-        <Text style={[styles.navText, isSearchActive && styles.activeNavText]}>
-          Search
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[styles.navItem, isEventsActive && styles.activeNavItem]}
-        onPress={() => router.push('/events')}
-      >
-        <Calendar 
-          size={20} 
-          color={isEventsActive ? '#FFFFFF' : '#9CA3AF'} 
-        />
-        <Text style={[styles.navText, isEventsActive && styles.activeNavText]}>
-          Events
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[styles.navItem, isGroupsActive && styles.activeNavItem]}
-        onPress={() => router.push('/groups')}
-      >
-        <Users 
-          size={20} 
-          color={isGroupsActive ? '#FFFFFF' : '#9CA3AF'} 
-        />
-        <Text style={[styles.navText, isGroupsActive && styles.activeNavText]}>
-          Groups
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[styles.navItem, isQuizActive && styles.activeNavItem]}
-        onPress={() => router.push('/quiz')}
-      >
-        <Brain 
-          size={20} 
-          color={isQuizActive ? '#FFFFFF' : '#9CA3AF'} 
-        />
-        <Text style={[styles.navText, isQuizActive && styles.activeNavText]}>
-          Quiz
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[styles.navItem, isNotificationsActive && styles.activeNavItem]}
-        onPress={() => router.push('/notifications')}
-      >
-        <Bell 
-          size={20} 
-          color={isNotificationsActive ? '#FFFFFF' : '#9CA3AF'} 
-        />
-        <Text style={[styles.navText, isNotificationsActive && styles.activeNavText]}>
-          Alerts
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.leftSection}>
+        <TouchableOpacity style={styles.menuButton}>
+          <Menu size={24} color="#000000" />
+        </TouchableOpacity>
+        <Text style={styles.logo}>edvibe</Text>
+      </View>
+      
+      <View style={styles.rightSection}>
+        <TouchableOpacity 
+          style={styles.iconButton}
+          onPress={() => router.push('/store')}
+        >
+          <ShoppingCart size={24} color="#6B7280" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconButton}>
+          <User size={24} color="#6B7280" />
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.iconButton}
+          onPress={() => router.push('/notifications')}
+        >
+          <Bell size={24} color="#6B7280" />
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.iconButton}
+          onPress={() => router.push('/search')}
+        >
+          <Search size={24} color="#6B7280" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -100,29 +45,31 @@ export default function TopNavigation() {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#1F2937',
-    borderBottomWidth: 1,
-    borderBottomColor: '#374151',
-    paddingHorizontal: 16,
-  },
-  navItem: {
-    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    marginRight: 8,
-    borderRadius: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
   },
-  activeNavItem: {
-    backgroundColor: '#8B5CF6',
+  leftSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  navText: {
-    color: '#9CA3AF',
-    fontSize: 14,
-    fontWeight: '600',
-    marginLeft: 6,
+  menuButton: {
+    marginRight: 16,
   },
-  activeNavText: {
-    color: '#FFFFFF',
+  logo: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000000',
+  },
+  rightSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconButton: {
+    marginLeft: 16,
   },
 });

@@ -1,16 +1,16 @@
 import { Tabs } from 'expo-router';
-import { Chrome as Home, Headphones, BookOpen, User, ShoppingBag } from 'lucide-react-native';
+import { Home, Headphones, BookOpen, MessageSquare, User } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#8B5CF6',
+        tabBarActiveTintColor: '#000000',
         tabBarInactiveTintColor: '#9CA3AF',
         tabBarStyle: {
-          backgroundColor: '#1F2937',
-          borderTopColor: '#374151',
+          backgroundColor: '#FFFFFF',
+          borderTopColor: '#E5E7EB',
           borderTopWidth: 1,
           paddingTop: 8,
           paddingBottom: 8,
@@ -18,7 +18,7 @@ export default function TabLayout() {
         },
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: '600',
+          fontWeight: '500',
           marginTop: 4,
         },
       }}>
@@ -50,25 +50,25 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="store"
+        name="forum"
         options={{
-          title: 'Store',
+          title: 'Forum',
           tabBarIcon: ({ size, color }) => (
-            <ShoppingBag size={size} color={color} />
+            <MessageSquare size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
+          title: 'Account',
           tabBarIcon: ({ size, color }) => (
             <User size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="forum"
+        name="store"
         options={{
           href: null,
         }}
