@@ -7,10 +7,9 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  FlatList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Search, Play, Pause, Heart, Upload, Star, ChevronRight } from 'lucide-react-native';
+import { Search, Play, Pause, SkipBack, SkipForward } from 'lucide-react-native';
 import TopNavigation from '@/components/TopNavigation';
 import FloatingActionButton from '@/components/FloatingActionButton';
 
@@ -18,277 +17,77 @@ interface Podcast {
   id: string;
   title: string;
   author: string;
-  avatar: string;
   cover: string;
   duration: string;
   category: string;
-  likes: number;
-  plays: number;
-  rating: number;
   isPlaying: boolean;
-  isLiked: boolean;
-  isNew?: boolean;
-  isRecommended?: boolean;
-  isTopChart?: boolean;
-}
-
-interface PodcastSection {
-  id: string;
-  title: string;
-  subtitle?: string;
-  podcasts: Podcast[];
 }
 
 export default function PodcastsScreen() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedTab, setSelectedTab] = useState('For you');
-  
-  const [allPodcasts] = useState<Podcast[]>([
+  const [selectedTab, setSelectedTab] = useState('For You');
+  const [currentPodcast, setCurrentPodcast] = useState<Podcast | null>({
+    id: '1',
+    title: 'The Future of Education',
+    author: 'Dr. Sarah Johnson',
+    cover: 'https://images.pexels.com/photos/256417/pexels-photo-256417.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
+    duration: '45:32',
+    category: 'Education',
+    isPlaying: false,
+  });
+
+  const [trendingPodcasts] = useState<Podcast[]>([
     {
       id: '1',
-      title: 'The Science of Learning',
-      author: 'Dr. Sarah Chen',
-      avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop',
+      title: 'The Future of Education',
+      author: 'Dr. Sarah Johnson',
       cover: 'https://images.pexels.com/photos/256417/pexels-photo-256417.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
       duration: '45:32',
-      category: 'Psychology',
-      likes: 234,
-      plays: 1250,
-      rating: 4.8,
+      category: 'Education',
       isPlaying: false,
-      isLiked: false,
-      isRecommended: true,
-      isTopChart: true,
     },
     {
       id: '2',
-      title: 'Mastering Mathematics',
+      title: 'Learning Psychology',
       author: 'Prof. Michael Davis',
-      avatar: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop',
-      cover: 'https://images.pexels.com/photos/6238297/pexels-photo-6238297.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
-      duration: '52:18',
-      category: 'Mathematics',
-      likes: 189,
-      plays: 890,
-      rating: 4.9,
+      cover: 'https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
+      duration: '38:15',
+      category: 'Psychology',
       isPlaying: false,
-      isLiked: true,
-      isRecommended: true,
-      isNew: true,
     },
     {
       id: '3',
-      title: 'History Uncovered',
+      title: 'Science Simplified',
       author: 'Emma Thompson',
-      avatar: 'https://images.pexels.com/photos/1139743/pexels-photo-1139743.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop',
       cover: 'https://images.pexels.com/photos/2249531/pexels-photo-2249531.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
-      duration: '38:44',
-      category: 'History',
-      likes: 156,
-      plays: 670,
-      rating: 4.7,
+      duration: '52:20',
+      category: 'Science',
       isPlaying: false,
-      isLiked: false,
-      isNew: true,
-      isTopChart: true,
-    },
-    {
-      id: '4',
-      title: 'Code & Coffee',
-      author: 'Alex Rivera',
-      avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop',
-      cover: 'https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
-      duration: '28:15',
-      category: 'Programming',
-      likes: 312,
-      plays: 1890,
-      rating: 4.6,
-      isPlaying: false,
-      isLiked: false,
-      isRecommended: true,
-    },
-    {
-      id: '5',
-      title: 'Philosophy Talks',
-      author: 'Dr. James Wilson',
-      avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop',
-      cover: 'https://images.pexels.com/photos/1112048/pexels-photo-1112048.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
-      duration: '41:22',
-      category: 'Philosophy',
-      likes: 98,
-      plays: 445,
-      rating: 4.5,
-      isPlaying: false,
-      isLiked: false,
-      isNew: true,
-    },
-    {
-      id: '6',
-      title: 'Business Insights',
-      author: 'Maria Garcia',
-      avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop',
-      cover: 'https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
-      duration: '35:48',
-      category: 'Business',
-      likes: 167,
-      plays: 723,
-      rating: 4.4,
-      isPlaying: false,
-      isLiked: false,
-      isTopChart: true,
     },
   ]);
 
-  const tabs = ['For you', 'Top charts', 'Categories', "Editor's Choice"];
+  const tabs = ['For You', 'Top Charts', 'Categories', "Editor's Choice"];
 
-  const getSections = (): PodcastSection[] => {
-    switch (selectedTab) {
-      case 'For you':
-        return [
-          {
-            id: 'recommended',
-            title: 'Recommended for you',
-            subtitle: 'Based on your listening history',
-            podcasts: allPodcasts.filter(p => p.isRecommended),
-          },
-          {
-            id: 'new',
-            title: 'New & updated podcasts',
-            subtitle: 'Fresh content from your favorite creators',
-            podcasts: allPodcasts.filter(p => p.isNew),
-          },
-          {
-            id: 'trending',
-            title: 'Trending now',
-            subtitle: 'Popular podcasts this week',
-            podcasts: allPodcasts.slice(0, 4),
-          },
-        ];
-      case 'Top charts':
-        return [
-          {
-            id: 'top',
-            title: 'Top podcasts',
-            subtitle: 'Most popular this month',
-            podcasts: allPodcasts.filter(p => p.isTopChart),
-          },
-        ];
-      case 'Categories':
-        return [
-          {
-            id: 'education',
-            title: 'Education',
-            podcasts: allPodcasts.filter(p => ['Psychology', 'Mathematics', 'Programming'].includes(p.category)),
-          },
-          {
-            id: 'lifestyle',
-            title: 'Lifestyle & Culture',
-            podcasts: allPodcasts.filter(p => ['History', 'Philosophy', 'Business'].includes(p.category)),
-          },
-        ];
-      default:
-        return [
-          {
-            id: 'editors',
-            title: "Editor's picks",
-            subtitle: 'Hand-picked by our team',
-            podcasts: allPodcasts.slice(0, 3),
-          },
-        ];
+  const togglePlay = () => {
+    if (currentPodcast) {
+      setCurrentPodcast({
+        ...currentPodcast,
+        isPlaying: !currentPodcast.isPlaying,
+      });
     }
   };
-
-  const togglePlay = (podcastId: string) => {
-    // Handle play/pause logic
-  };
-
-  const toggleLike = (podcastId: string) => {
-    // Handle like logic
-  };
-
-  const renderPodcastItem = ({ item }: { item: Podcast }) => (
-    <TouchableOpacity style={styles.podcastItem}>
-      <View style={styles.coverContainer}>
-        <Image source={{ uri: item.cover }} style={styles.podcastCover} />
-        <TouchableOpacity 
-          style={styles.playOverlay}
-          onPress={() => togglePlay(item.id)}
-        >
-          {item.isPlaying ? (
-            <Pause size={20} color="#FFFFFF" />
-          ) : (
-            <Play size={20} color="#FFFFFF" />
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.likeButton}
-          onPress={() => toggleLike(item.id)}
-        >
-          <Heart 
-            size={16} 
-            color={item.isLiked ? '#EF4444' : '#FFFFFF'} 
-            fill={item.isLiked ? '#EF4444' : 'transparent'} 
-          />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.podcastTitle} numberOfLines={2}>{item.title}</Text>
-      <Text style={styles.podcastAuthor} numberOfLines={1}>{item.author}</Text>
-      <View style={styles.podcastMeta}>
-        <View style={styles.ratingContainer}>
-          <Star size={12} color="#F59E0B" fill="#F59E0B" />
-          <Text style={styles.rating}>{item.rating}</Text>
-        </View>
-        <Text style={styles.duration}>{item.duration}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
-  const renderSection = (section: PodcastSection) => (
-    <View key={section.id} style={styles.section}>
-      <View style={styles.sectionHeader}>
-        <View>
-          <Text style={styles.sectionTitle}>{section.title}</Text>
-          {section.subtitle && (
-            <Text style={styles.sectionSubtitle}>{section.subtitle}</Text>
-          )}
-        </View>
-        <TouchableOpacity style={styles.seeAllButton}>
-          <Text style={styles.seeAllText}>See all</Text>
-          <ChevronRight size={16} color="#8B5CF6" />
-        </TouchableOpacity>
-      </View>
-      
-      <FlatList
-        data={section.podcasts}
-        renderItem={renderPodcastItem}
-        keyExtractor={(item) => item.id}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.podcastGrid}
-        ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-      />
-    </View>
-  );
 
   return (
     <SafeAreaView style={styles.container}>
       <TopNavigation />
       
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Podcasts</Text>
-        <TouchableOpacity style={styles.uploadButton}>
-          <Upload size={24} color="#FFFFFF" />
-        </TouchableOpacity>
-      </View>
-
       {/* Search Bar */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Search size={20} color="#9CA3AF" />
           <TextInput
             style={styles.searchInput}
-            placeholder="Search for podcasts & audio content"
+            placeholder="Search podcasts..."
             placeholderTextColor="#9CA3AF"
             value={searchQuery}
             onChangeText={setSearchQuery}
@@ -319,9 +118,63 @@ export default function PodcastsScreen() {
         ))}
       </ScrollView>
 
-      {/* Content Sections */}
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {getSections().map(renderSection)}
+        {/* Current Playing Podcast */}
+        {currentPodcast && (
+          <View style={styles.currentPodcastContainer}>
+            <View style={styles.currentPodcastInfo}>
+              <Image source={{ uri: currentPodcast.cover }} style={styles.currentPodcastCover} />
+              <View style={styles.currentPodcastDetails}>
+                <Text style={styles.currentPodcastTitle}>{currentPodcast.title}</Text>
+                <Text style={styles.currentPodcastAuthor}>{currentPodcast.author}</Text>
+              </View>
+              <View style={styles.playbackControls}>
+                <TouchableOpacity style={styles.controlButton}>
+                  <SkipBack size={24} color="#000000" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.playButton} onPress={togglePlay}>
+                  {currentPodcast.isPlaying ? (
+                    <Pause size={24} color="#FFFFFF" />
+                  ) : (
+                    <Play size={24} color="#FFFFFF" />
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.controlButton}>
+                  <SkipForward size={24} color="#000000" />
+                </TouchableOpacity>
+              </View>
+            </View>
+            
+            {/* Progress Bar */}
+            <View style={styles.progressContainer}>
+              <Text style={styles.progressTime}>0:00</Text>
+              <View style={styles.progressBar}>
+                <View style={styles.progressFill} />
+                <View style={styles.progressHandle} />
+              </View>
+              <Text style={styles.progressTime}>0:00</Text>
+            </View>
+          </View>
+        )}
+
+        {/* Trending Podcasts Section */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Trending Podcasts</Text>
+            <TouchableOpacity style={styles.seeAllButton}>
+              <Text style={styles.seeAllText}>See all</Text>
+              <Text style={styles.seeAllArrow}>›</Text>
+            </TouchableOpacity>
+          </View>
+          
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.podcastGrid}>
+            {trendingPodcasts.map((podcast) => (
+              <TouchableOpacity key={podcast.id} style={styles.podcastCard}>
+                <Image source={{ uri: podcast.cover }} style={styles.podcastCover} />
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
       </ScrollView>
 
       <FloatingActionButton />
@@ -332,29 +185,7 @@ export default function PodcastsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#111827',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#374151',
-  },
-  headerTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  uploadButton: {
-    width: 44,
-    height: 44,
-    backgroundColor: '#8B5CF6',
-    borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
   searchContainer: {
     paddingHorizontal: 20,
@@ -363,46 +194,122 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1F2937',
-    borderRadius: 12,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 25,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: '#374151',
   },
   searchInput: {
     flex: 1,
-    color: '#FFFFFF',
+    color: '#000000',
     fontSize: 16,
     marginLeft: 12,
   },
   tabsContainer: {
     paddingHorizontal: 20,
-    marginBottom: 8,
+    marginBottom: 20,
   },
   tab: {
     paddingHorizontal: 20,
     paddingVertical: 12,
     marginRight: 8,
     borderRadius: 20,
-    backgroundColor: '#1F2937',
-    borderWidth: 1,
-    borderColor: '#374151',
+    backgroundColor: '#F3F4F6',
   },
   selectedTab: {
-    backgroundColor: '#8B5CF6',
-    borderColor: '#8B5CF6',
+    backgroundColor: '#000000',
   },
   tabText: {
-    color: '#9CA3AF',
+    color: '#6B7280',
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '500',
   },
   selectedTabText: {
     color: '#FFFFFF',
+    fontWeight: '600',
   },
   content: {
     flex: 1,
+  },
+  currentPodcastContainer: {
+    backgroundColor: '#F9FAFB',
+    marginHorizontal: 20,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 32,
+  },
+  currentPodcastInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  currentPodcastCover: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    marginRight: 16,
+  },
+  currentPodcastDetails: {
+    flex: 1,
+  },
+  currentPodcastTitle: {
+    color: '#000000',
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  currentPodcastAuthor: {
+    color: '#6B7280',
+    fontSize: 14,
+  },
+  playbackControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  controlButton: {
+    padding: 8,
+  },
+  playButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#000000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 8,
+  },
+  progressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  progressTime: {
+    color: '#6B7280',
+    fontSize: 12,
+    width: 40,
+  },
+  progressBar: {
+    flex: 1,
+    height: 4,
+    backgroundColor: '#E5E7EB',
+    borderRadius: 2,
+    marginHorizontal: 12,
+    position: 'relative',
+  },
+  progressFill: {
+    width: '20%',
+    height: '100%',
+    backgroundColor: '#000000',
+    borderRadius: 2,
+  },
+  progressHandle: {
+    position: 'absolute',
+    left: '20%',
+    top: -4,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#000000',
+    marginLeft: -6,
   },
   section: {
     marginBottom: 32,
@@ -410,99 +317,37 @@ const styles = StyleSheet.create({
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     paddingHorizontal: 20,
     marginBottom: 16,
   },
   sectionTitle: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontSize: 22,
     fontWeight: 'bold',
-  },
-  sectionSubtitle: {
-    color: '#9CA3AF',
-    fontSize: 14,
-    marginTop: 2,
   },
   seeAllButton: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   seeAllText: {
-    color: '#8B5CF6',
-    fontSize: 14,
-    fontWeight: '600',
+    color: '#6B7280',
+    fontSize: 16,
     marginRight: 4,
+  },
+  seeAllArrow: {
+    color: '#6B7280',
+    fontSize: 18,
   },
   podcastGrid: {
     paddingLeft: 20,
   },
-  itemSeparator: {
-    width: 16,
-  },
-  podcastItem: {
-    width: 140,
-  },
-  coverContainer: {
-    position: 'relative',
-    marginBottom: 8,
+  podcastCard: {
+    marginRight: 16,
   },
   podcastCover: {
-    width: 140,
-    height: 140,
+    width: 160,
+    height: 160,
     borderRadius: 12,
-  },
-  playOverlay: {
-    position: 'absolute',
-    bottom: 8,
-    right: 8,
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  likeButton: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  podcastTitle: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '600',
-    lineHeight: 18,
-    marginBottom: 4,
-  },
-  podcastAuthor: {
-    color: '#9CA3AF',
-    fontSize: 12,
-    marginBottom: 6,
-  },
-  podcastMeta: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  rating: {
-    color: '#F59E0B',
-    fontSize: 12,
-    fontWeight: '600',
-    marginLeft: 2,
-  },
-  duration: {
-    color: '#9CA3AF',
-    fontSize: 12,
   },
 });
