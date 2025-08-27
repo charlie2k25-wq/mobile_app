@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Menu, ShoppingCart, User, Bell, Search, Users, Download, X } from 'lucide-react-native';
+import { Menu, ShoppingCart, User, Bell, Search, Users, Calendar, BookOpen, Trophy, Settings, HelpCircle, LogOut, X } from 'lucide-react-native';
 
 export default function TopNavigation() {
   const router = useRouter();
@@ -16,12 +16,47 @@ export default function TopNavigation() {
       action: () => router.push('/groups')
     },
     { 
+      id: 'events', 
+      title: 'Events', 
+      icon: Calendar, 
+      description: 'Webinars and workshops',
+      action: () => router.push('/events')
+    },
+    { 
+      id: 'quiz', 
+      title: 'Quizzes', 
+      icon: Trophy, 
+      description: 'Test your knowledge',
+      action: () => router.push('/quiz')
+    },
+    { 
       id: 'downloads', 
       title: 'Downloads', 
-      icon: Download, 
-      description: 'Your downloaded and purchased items',
+      icon: BookOpen, 
+      description: 'Your downloaded content',
       action: () => router.push('/downloads')
     },
+  ];
+
+  const settingsItems = [
+    {
+      id: 'settings',
+      title: 'Settings',
+      icon: Settings,
+      action: () => console.log('Settings')
+    },
+    {
+      id: 'help',
+      title: 'Help & Support',
+      icon: HelpCircle,
+      action: () => console.log('Help')
+    },
+    {
+      id: 'logout',
+      title: 'Sign Out',
+      icon: LogOut,
+      action: () => console.log('Logout')
+    }
   ];
 
   const handleMenuItemPress = (item: typeof menuItems[0]) => {
@@ -34,7 +69,7 @@ export default function TopNavigation() {
       <View style={styles.container}>
         <View style={styles.leftSection}>
           <TouchableOpacity style={styles.menuButton} onPress={() => setShowMenu(true)}>
-            <Menu size={24} color="#000000" />
+            <Menu size={24} color="#6B7280" />
           </TouchableOpacity>
           <Text style={styles.logo}>edvibe</Text>
         </View>
@@ -64,38 +99,65 @@ export default function TopNavigation() {
         </View>
       </View>
 
-      {/* Menu Modal */}
+      {/* Sidebar Menu Modal */}
       <Modal
         visible={showMenu}
         transparent
-        animationType="fade"
+        animationType="slide"
         onRequestClose={() => setShowMenu(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={styles.menuModal}>
-            <View style={styles.menuHeader}>
-              <Text style={styles.menuTitle}>Menu</Text>
+          <TouchableOpacity 
+            style={styles.modalBackground} 
+            activeOpacity={1} 
+            onPress={() => setShowMenu(false)}
+          />
+          <View style={styles.sidebar}>
+            <View style={styles.sidebarHeader}>
+              <Text style={styles.sidebarTitle}>Menu</Text>
               <TouchableOpacity onPress={() => setShowMenu(false)}>
-                <X size={24} color="#000000" />
+                <X size={24} color="#6B7280" />
               </TouchableOpacity>
             </View>
             
-            <ScrollView style={styles.menuContent}>
-              {menuItems.map((item) => (
-                <TouchableOpacity
-                  key={item.id}
-                  style={styles.menuItem}
-                  onPress={() => handleMenuItemPress(item)}
-                >
-                  <View style={styles.menuItemIcon}>
-                    <item.icon size={24} color="#6B7280" />
-                  </View>
-                  <View style={styles.menuItemContent}>
+            <ScrollView style={styles.sidebarContent}>
+              <View style={styles.menuSection}>
+                <Text style={styles.sectionTitle}>Explore</Text>
+                {menuItems.map((item) => (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={styles.menuItem}
+                    onPress={() => handleMenuItemPress(item)}
+                  >
+                    <View style={styles.menuItemIcon}>
+                      <item.icon size={20} color="#6B7280" />
+                    </View>
+                    <View style={styles.menuItemContent}>
+                      <Text style={styles.menuItemTitle}>{item.title}</Text>
+                      <Text style={styles.menuItemDescription}>{item.description}</Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              <View style={styles.menuSection}>
+                <Text style={styles.sectionTitle}>Account</Text>
+                {settingsItems.map((item) => (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={styles.menuItem}
+                    onPress={() => {
+                      setShowMenu(false);
+                      item.action();
+                    }}
+                  >
+                    <View style={styles.menuItemIcon}>
+                      <item.icon size={20} color="#6B7280" />
+                    </View>
                     <Text style={styles.menuItemTitle}>{item.title}</Text>
-                    <Text style={styles.menuItemDescription}>{item.description}</Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
+                  </TouchableOpacity>
+                ))}
+              </View>
             </ScrollView>
           </View>
         </View>
@@ -121,6 +183,7 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     marginRight: 16,
+    padding: 4,
   },
   logo: {
     fontSize: 24,
@@ -133,25 +196,26 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     marginLeft: 16,
+    padding: 4,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-start',
+    flexDirection: 'row',
   },
-  menuModal: {
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  sidebar: {
+    width: 280,
     backgroundColor: '#FFFFFF',
-    marginTop: 80,
-    marginHorizontal: 20,
-    borderRadius: 16,
-    maxHeight: '70%',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: -2, height: 0 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 8,
   },
-  menuHeader: {
+  sidebarHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -159,41 +223,52 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E5E7EB',
   },
-  menuTitle: {
+  sidebarTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#000000',
   },
-  menuContent: {
+  sidebarContent: {
     flex: 1,
+  },
+  menuSection: {
+    paddingVertical: 16,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#6B7280',
+    paddingHorizontal: 20,
+    paddingBottom: 8,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
   },
   menuItemIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: '#F3F4F6',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 16,
+    marginRight: 12,
   },
   menuItemContent: {
     flex: 1,
   },
   menuItemTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '500',
     color: '#000000',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   menuItemDescription: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#6B7280',
   },
 });

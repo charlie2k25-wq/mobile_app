@@ -12,10 +12,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="auth/login" options={{ headerShown: false }} />
         <Stack.Screen name="auth/register" options={{ headerShown: false }} />
-        <Stack.Screen name="events/index" options={{ headerShown: false }} />
         <Stack.Screen name="groups/index" options={{ headerShown: false }} />
-        <Stack.Screen name="quiz/index" options={{ headerShown: false }} />
-        <Stack.Screen name="notifications/index" options={{ headerShown: false }} />
         <Stack.Screen name="downloads/index" options={{ headerShown: false }} />
         <Stack.Screen name="post/story" options={{ headerShown: false }} />
         <Stack.Screen name="post/update" options={{ headerShown: false }} />
