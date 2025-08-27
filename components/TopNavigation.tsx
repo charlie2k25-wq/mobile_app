@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Menu, ShoppingCart, User, Bell, Search, Users, Calendar, BookOpen, Trophy, Settings, HelpCircle, LogOut, X } from 'lucide-react-native';
+import { Menu, ShoppingCart, User, Bell, Search, Users, Calendar, BookOpen, Trophy, Settings, CircleHelp as HelpCircle, LogOut, X } from 'lucide-react-native';
 
 export default function TopNavigation() {
   const router = useRouter();
